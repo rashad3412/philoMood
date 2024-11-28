@@ -14,7 +14,7 @@ function HomePage() {
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-b from-teal-100 to-amber-500 h-screen">
-      <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full text-center">
+      <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm w-full text-center">
         <h1 className="text-cyan-600 font-mono text-2xl font-bold tracking-wider">
           PhiloMood
         </h1>
