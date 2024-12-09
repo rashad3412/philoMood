@@ -1,30 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function HomePage() {
   const [mood, setMood] = useState(""); // State for user input
   const [quote, setQuote] = useState(""); // State for the fetched quote
-  const [theorist, setTheorist] = useState(""); //set theorist
+  const [theorist, setTheorist] = useState(""); // Set theorist
 
+  // Fetch the quote from the API
   const fetchQuote = async () => {
     try {
-      const response = await axios.get("/api/quotes"); // Fetch quotes through Vite's proxy
+      const response = await axios.get("https://zenquotes.io/api/random"); // Full API URL for production
       const quotes = response.data;
 
-      // Filter the quotes or pick a random one (modify as needed for your use case)
-      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      // ZenQuotes returns an array, pick the first quote
+      const randomQuote = quotes[0];
       setQuote(randomQuote.q); // Set the quote text
-      setTheorist(randomQuote.a); // Example practical tip
+      setTheorist(randomQuote.a); // Set the theorist (author) name
     } catch (error) {
       console.error("Error fetching the quote:", error);
       setQuote("Sorry, we couldn't find a quote right now...");
     }
   };
 
+  // Handle the input change from the user
   const handleInputChange = (e) => {
     setMood(e.target.value); // Update the mood state with user input
   };
 
+  // Handle the form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form submission
     if (mood) {
@@ -34,6 +37,7 @@ function HomePage() {
     }
   };
 
+  // Display the quote and theorist
   const displayQuote = quote || "Your aphorism will appear here.";
   const displayTheorist = theorist || "A theorist will appear here.";
 
@@ -69,10 +73,10 @@ function HomePage() {
           <h2 className="text-lg font-semibold text-gray-600">
             <span className="mr-2">💬</span>Aphorism:
           </h2>
-          <p className=" text-sm text-gray-600 font-mono mt-1 font-extralight tracking-wide border-solid border border-cyan-500 p-1 rounded">
+          <p className="text-sm text-gray-600 font-mono mt-1 font-extralight tracking-wide border-solid border border-cyan-500 p-1 rounded">
             {displayQuote}
           </p>
-          <h2 className="text-lg font-semibold  text-gray-600 mt-4">
+          <h2 className="text-lg font-semibold text-gray-600 mt-4">
             <span className="mr-2">📚</span>Theorist:
           </h2>
           <p className="text-gray-600 mt-1 italic">{displayTheorist}</p>
