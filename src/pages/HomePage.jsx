@@ -17,7 +17,7 @@ function HomePage() {
       setTheorist(randomQuote.a); // Example practical tip
     } catch (error) {
       console.error("Error fetching the quote:", error);
-      setQuote("Sorry, we couldn't find a quote right now.");
+      setQuote("Sorry, we couldn't find a quote right now...");
     }
   };
 
