@@ -5,6 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    // Remove the proxy setup
+    proxy: {
+      "/api": "https://zenquotes.io", // Replace with your API's base URL
+    },
   },
 });
