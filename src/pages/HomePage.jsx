@@ -8,13 +8,16 @@ function HomePage() {
 
   const fetchQuote = async () => {
     try {
-      const response = await axios.get("/.netlify/functions/quote"); // Fetch quotes through Vite's proxy
-      const quotes = response.data;
+      const response = await axios.get("/.netlify/functions/quote");
+      console.log("Response data:", response.data); // Log the full response to see its content
 
-      // Filter the quotes or pick a random one (modify as needed for your use case)
-      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      setQuote(randomQuote.q); // Set the quote text
-      setTheorist(randomQuote.a); // Example practical tip
+      if (!response.data || !response.data.quote) {
+        throw new Error("Quote not found in response");
+      }
+
+      const { quote } = response.data; // Destructure quote
+      setQuote(quote.body); // Set quote text
+      setTheorist(quote.author); // Set author of the quote
     } catch (error) {
       console.error("Error fetching the quote:", error);
       setQuote("Sorry, we couldn't find a quote right now.");

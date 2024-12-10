@@ -1,21 +1,29 @@
 import axios from "axios";
 
-export const handler = async (event, context) => {
+export async function handler() {
   try {
-    const response = await axios.get("https://zenquotes.io/api/quotes");
+    // Call the third-party API to fetch the quote
+    const response = await axios.get("https://favqs.com/api/qotd", {
+      headers: {
+        Authorization: "Token token=004883ce10cf809d8a42f5334b311e09", // Replace with your API key
+      },
+    });
 
+    // Structure the response data correctly
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Allow all origins or restrict to specific domains
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(response.data),
+      body: JSON.stringify({
+        quote: {
+          body: response.data.quote.body,
+          author: response.data.quote.author,
+        },
+      }),
     };
   } catch (error) {
+    console.error("Error fetching quote:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error fetching quote", error }),
+      body: JSON.stringify({ error: "Failed to fetch quote" }),
     };
   }
-};
+}
