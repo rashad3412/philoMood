@@ -8,7 +8,7 @@ function HomePage() {
 
   const fetchQuote = async () => {
     try {
-      const response = await axios.get("/api/quotes"); // Fetch quotes through Vite's proxy
+      const response = await axios.get("https://zenquotes.io/api/quotes"); // Fetch quotes through Vite's proxy
       const quotes = response.data;
 
       // Filter the quotes or pick a random one (modify as needed for your use case)
