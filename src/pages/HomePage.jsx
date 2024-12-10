@@ -19,16 +19,12 @@ function HomePage() {
     }, 1000); // Simulating a loading time
   };
 
-  const handleInputChange = (e) => {
-    setMood(e.target.value); // Update the mood state with user input
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent form submission
     if (mood) {
       fetchQuote(); // Fetch a random quote when the user submits their mood
     } else {
-      alert("Please enter a mood.");
+      fetchQuote();
     }
   };
 
