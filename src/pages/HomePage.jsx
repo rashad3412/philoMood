@@ -1,33 +1,11 @@
 import { useState } from "react";
+import { randomQuotes } from "..//quotes"; // Import randomQuotes
 
 function HomePage() {
   const [mood, setMood] = useState(""); // State for user input
   const [quote, setQuote] = useState(""); // State for the fetched quote
   const [theorist, setTheorist] = useState(""); // Set theorist
   const [loading, setLoading] = useState(false); // Loading state for button feedback
-
-  const randomQuotes = [
-    {
-      body: "The only way to do great work is to love what you do.",
-      author: "Steve Jobs",
-    },
-    {
-      body: "In the end, we will remember not the words of our enemies, but the silence of our friends.",
-      author: "Martin Luther King Jr.",
-    },
-    {
-      body: "Life is what happens when you're busy making other plans.",
-      author: "John Lennon",
-    },
-    {
-      body: "It does not matter how slowly you go as long as you do not stop.",
-      author: "Confucius",
-    },
-    {
-      body: "Do not go where the path may lead, go instead where there is no path and leave a trail.",
-      author: "Ralph Waldo Emerson",
-    },
-  ];
 
   const fetchQuote = () => {
     setLoading(true); // Set loading to true when fetching the quote
@@ -67,13 +45,6 @@ function HomePage() {
           Transforming moods into mindfulness.
         </p>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={mood}
-            onChange={handleInputChange}
-            placeholder="Enter your mood..."
-            className="mt-4 w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
-          />
           <button
             type="submit"
             className="mt-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600"
