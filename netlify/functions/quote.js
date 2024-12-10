@@ -1,29 +1,34 @@
+// netlify/functions/quote.js
+
 import axios from "axios";
 
-export async function handler() {
+export const handler = async () => {
   try {
-    // Call the third-party API to fetch the quote
-    const response = await axios.get("https://favqs.com/api/qotd", {
+    const apiKey = "004883ce10cf809d8a42f5334b311e09"; // Use your actual API key
+    const apiUrl = `https://favqs.com/api/qotd`;
+
+    const response = await axios.get(apiUrl, {
       headers: {
-        Authorization: "Token token=004883ce10cf809d8a42f5334b311e09", // Replace with your API key
+        Authorization: `Token token=${apiKey}`,
       },
     });
 
-    // Structure the response data correctly
+    const quote = response.data;
+
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        quote: {
-          body: response.data.quote.body,
-          author: response.data.quote.author,
-        },
-      }),
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Allow all domains
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quote: quote }), // Return the quote data as JSON
     };
   } catch (error) {
     console.error("Error fetching quote:", error);
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch quote" }),
+      body: JSON.stringify({ message: "Internal Server Error" }),
     };
   }
-}
+};
