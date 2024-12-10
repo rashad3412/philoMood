@@ -1,42 +1,54 @@
 import { useState } from "react";
-import axios from "axios";
 
 function HomePage() {
-  const [mood, setMood] = useState(""); // User input state
-  const [quote, setQuote] = useState(""); // Fetched quote state
-  const [theorist, setTheorist] = useState(""); // Theorist state
-  const [loading, setLoading] = useState(false); // Loading state
+  const [mood, setMood] = useState(""); // State for user input
+  const [quote, setQuote] = useState(""); // State for the fetched quote
+  const [theorist, setTheorist] = useState(""); // Set theorist
+  const [loading, setLoading] = useState(false); // Loading state for button feedback
 
-  const fetchQuote = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("/.netlify/functions/quote");
-      console.log("Response data:", response.data);
+  const randomQuotes = [
+    {
+      body: "The only way to do great work is to love what you do.",
+      author: "Steve Jobs",
+    },
+    {
+      body: "In the end, we will remember not the words of our enemies, but the silence of our friends.",
+      author: "Martin Luther King Jr.",
+    },
+    {
+      body: "Life is what happens when you're busy making other plans.",
+      author: "John Lennon",
+    },
+    {
+      body: "It does not matter how slowly you go as long as you do not stop.",
+      author: "Confucius",
+    },
+    {
+      body: "Do not go where the path may lead, go instead where there is no path and leave a trail.",
+      author: "Ralph Waldo Emerson",
+    },
+  ];
 
-      if (response.data && response.data.quote && response.data.quote.quote) {
-        const { body, author } = response.data.quote.quote; // Extract quote body and author
-        setQuote(body);
-        setTheorist(author);
-      } else {
-        throw new Error("Quote structure is incomplete.");
-      }
-    } catch (error) {
-      console.error("Error fetching quote:", error);
-      setQuote("Sorry, we couldn't fetch a quote right now.");
-      setTheorist("");
-    } finally {
-      setLoading(false);
-    }
+  const fetchQuote = () => {
+    setLoading(true); // Set loading to true when fetching the quote
+
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * randomQuotes.length);
+      const selectedQuote = randomQuotes[randomIndex];
+      setQuote(selectedQuote.body);
+      setTheorist(selectedQuote.author);
+      setLoading(false); // Set loading to false after the quote is fetched
+    }, 1000); // Simulating a loading time
   };
 
   const handleInputChange = (e) => {
-    setMood(e.target.value); // Update mood state
+    setMood(e.target.value); // Update the mood state with user input
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (mood.trim()) {
-      fetchQuote();
+    e.preventDefault(); // Prevent form submission
+    if (mood) {
+      fetchQuote(); // Fetch a random quote when the user submits their mood
     } else {
       alert("Please enter a mood.");
     }
@@ -65,16 +77,20 @@ function HomePage() {
           <button
             type="submit"
             className="mt-4 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-600"
-            disabled={loading}
+            disabled={loading} // Disable button while loading
           >
             {loading ? "Loading..." : "Get Quote"}
           </button>
         </form>
-        <div className="mt-6 text-left">
+        <div
+          className={`mt-6 text-left transition-opacity duration-1000 ease-in ${
+            quote ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <h2 className="text-lg font-semibold text-gray-600">
             <span className="mr-2">💬</span>Aphorism:
           </h2>
-          <p className="text-sm text-gray-600 font-mono mt-1 font-extralight tracking-wide border-solid border border-cyan-500 p-1 rounded">
+          <p className=" text-sm text-gray-600 font-mono mt-1 font-extralight tracking-wide border-solid border border-cyan-500 p-1 rounded">
             {displayQuote}
           </p>
           <h2 className="text-lg font-semibold text-gray-600 mt-4">
